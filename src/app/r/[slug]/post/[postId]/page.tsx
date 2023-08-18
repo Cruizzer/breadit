@@ -11,7 +11,7 @@ import { ArrowBigDown, ArrowBigUp, Loader2 } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 
-interface SubRedditPostPageProps {
+interface ThreadPostPageProps {
   params: {
     postId: string
   }
@@ -20,7 +20,7 @@ interface SubRedditPostPageProps {
 export const dynamic = 'force-dynamic'
 export const fetchCache = 'force-no-store'
 
-const SubRedditPostPage = async ({ params }: SubRedditPostPageProps) => {
+const ThreadPostPage = async ({ params }: ThreadPostPageProps) => {
   const cachedPost = (await redis.hgetall(
     `post:${params.postId}`
   )) as CachedPost
@@ -105,4 +105,4 @@ function PostVoteShell() {
   )
 }
 
-export default SubRedditPostPage
+export default ThreadPostPage

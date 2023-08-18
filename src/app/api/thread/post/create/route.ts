@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
 
-    const { title, content, subredditId } = PostValidator.parse(body)
+    const { title, content, threadId } = PostValidator.parse(body)
 
     const session = await getAuthSession()
 
@@ -15,10 +15,10 @@ export async function POST(req: Request) {
       return new Response('Unauthorized', { status: 401 })
     }
 
-    // verify user is subscribed to passed subreddit id
+    // verify user is subscribed to passed thread id
     const subscription = await db.subscription.findFirst({
       where: {
-        subredditId,
+        threadId,
         userId: session.user.id,
       },
     })
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         title,
         content,
         authorId: session.user.id,
-        subredditId,
+        threadId,
       },
     })
 
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     }
 
     return new Response(
-      'Could not post to subreddit at this time. Please try later',
+      'Could not post to thread at this time. Please try later',
       { status: 500 }
     )
   }

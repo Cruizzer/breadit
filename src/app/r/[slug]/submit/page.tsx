@@ -10,13 +10,13 @@ interface pageProps {
 }
 
 const page = async ({ params }: pageProps) => {
-  const subreddit = await db.subreddit.findFirst({
+  const thread = await db.thread.findFirst({
     where: {
       name: params.slug,
     },
   })
 
-  if (!subreddit) return notFound()
+  if (!thread) return notFound()
 
   return (
     <div className='flex flex-col items-start gap-6'>
@@ -33,10 +33,10 @@ const page = async ({ params }: pageProps) => {
       </div>
 
       {/* form */}
-      <Editor subredditId={subreddit.id} />
+      <Editor threadId={thread.id} />
 
       <div className='w-full flex justify-end'>
-        <Button type='submit' className='w-full' form='subreddit-post-form'>
+        <Button type='submit' className='w-full' form='thread-post-form'>
           Post
         </Button>
       </div>

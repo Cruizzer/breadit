@@ -12,10 +12,10 @@ import { useSession } from 'next-auth/react'
 
 interface PostFeedProps {
   initialPosts: ExtendedPost[]
-  subredditName?: string
+  threadName?: string
 }
 
-const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
+const PostFeed: FC<PostFeedProps> = ({ initialPosts, threadName }) => {
   const lastPostRef = useRef<HTMLElement>(null)
   const { ref, entry } = useIntersection({
     root: lastPostRef.current,
@@ -28,7 +28,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
     async ({ pageParam = 1 }) => {
       const query =
         `/api/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}` +
-        (!!subredditName ? `&subredditName=${subredditName}` : '')
+        (!!threadName ? `&threadName=${threadName}` : '')
 
       const { data } = await axios.get(query)
       return data as ExtendedPost[]
@@ -70,7 +70,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
               <Post
                 post={post}
                 commentAmt={post.comments.length}
-                subredditName={post.subreddit.name}
+                threadName={post.thread.name}
                 votesAmt={votesAmt}
                 currentVote={currentVote}
               />
@@ -82,7 +82,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
               key={post.id}
               post={post}
               commentAmt={post.comments.length}
-              subredditName={post.subreddit.name}
+              threadName={post.thread.name}
               votesAmt={votesAmt}
               currentVote={currentVote}
             />

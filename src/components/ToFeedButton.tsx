@@ -10,17 +10,17 @@ const ToFeedButton = () => {
   // if path is /r/mycom, turn into /
   // if path is /r/mycom/post/cligad6jf0003uhest4qqkeco, turn into /r/mycom
 
-  const subredditPath = getSubredditPath(pathname)
+  const threadPath = getThreadPath(pathname)
 
   return (
-    <a href={subredditPath} className={buttonVariants({ variant: 'ghost' })}>
+    <a href={threadPath} className={buttonVariants({ variant: 'ghost' })}>
       <ChevronLeft className='h-4 w-4 mr-1' />
-      {subredditPath === '/' ? 'Back home' : 'Back to community'}
+      {threadPath === '/' ? 'Back home' : 'Back to community'}
     </a>
   )
 }
 
-const getSubredditPath = (pathname: string) => {
+const getThreadPath = (pathname: string) => {
   const splitPath = pathname.split('/')
 
   if (splitPath.length === 3) return '/'

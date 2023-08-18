@@ -19,10 +19,10 @@ import '@/styles/editor.css'
 type FormData = z.infer<typeof PostValidator>
 
 interface EditorProps {
-  subredditId: string
+  threadId: string
 }
 
-export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
+export const Editor: React.FC<EditorProps> = ({ threadId }) => {
   const {
     register,
     handleSubmit,
@@ -30,7 +30,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
   } = useForm<FormData>({
     resolver: zodResolver(PostValidator),
     defaultValues: {
-      subredditId,
+      threadId,
       title: '',
       content: null,
     },
@@ -45,10 +45,10 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
     mutationFn: async ({
       title,
       content,
-      subredditId,
+      threadId,
     }: PostCreationRequest) => {
-      const payload: PostCreationRequest = { title, content, subredditId }
-      const { data } = await axios.post('/api/subreddit/post/create', payload)
+      const payload: PostCreationRequest = { title, content, threadId }
+      const { data } = await axios.post('/api/thread/post/create', payload)
       return data
     },
     onError: () => {
@@ -171,7 +171,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
     const payload: PostCreationRequest = {
       title: data.title,
       content: blocks,
-      subredditId,
+      threadId,
     }
 
     createPost(payload)
@@ -186,7 +186,7 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
   return (
     <div className='w-full p-4 bg-zinc-50 rounded-lg border border-zinc-200'>
       <form
-        id='subreddit-post-form'
+        id='thread-post-form'
         className='w-fit'
         onSubmit={handleSubmit(onSubmit)}>
         <div className='prose prose-stone dark:prose-invert'>

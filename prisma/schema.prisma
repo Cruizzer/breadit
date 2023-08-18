@@ -44,13 +44,13 @@ model Session {
 }
 
 model User {
-  id                String         @id @default(cuid())
-  name              String?
-  email             String?        @unique
-  emailVerified     DateTime?
-  createdSubreddits Subreddit[]    @relation("CreatedBy")
-  subscriptions     Subscription[]
-  votes             Vote[]
+  id             String         @id @default(cuid())
+  name           String?
+  email          String?        @unique
+  emailVerified  DateTime?
+  createdThreads Thread[]       @relation("CreatedBy")
+  subscriptions  Subscription[]
+  votes          Vote[]
 
   username String? @unique
 
@@ -62,7 +62,7 @@ model User {
   CommentVote CommentVote[]
 }
 
-model Subreddit {
+model Thread {
   id        String   @id @default(cuid())
   name      String   @unique
   createdAt DateTime @default(now())
@@ -77,26 +77,26 @@ model Subreddit {
 }
 
 model Subscription {
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
-  subreddit   Subreddit @relation(fields: [subredditId], references: [id])
-  subredditId String
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  thread   Thread @relation(fields: [threadId], references: [id])
+  threadId String
 
-  @@id([userId, subredditId])
+  @@id([userId, threadId])
 }
 
 model Post {
-  id          String    @id @default(cuid())
-  title       String
-  content     Json?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  author      User      @relation(fields: [authorId], references: [id])
-  authorId    String
-  subreddit   Subreddit @relation(fields: [subredditId], references: [id])
-  subredditId String
-  comments    Comment[]
-  votes       Vote[]
+  id        String    @id @default(cuid())
+  title     String
+  content   Json?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+  thread    Thread    @relation(fields: [threadId], references: [id])
+  threadId  String
+  comments  Comment[]
+  votes     Vote[]
 }
 
 model Comment {

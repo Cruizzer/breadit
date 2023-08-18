@@ -1,6 +1,6 @@
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { SubredditSubscriptionValidator } from '@/lib/validators/subreddit'
+import { ThreadSubscriptionValidator } from '@/lib/validators/thread'
 import { z } from 'zod'
 
 export async function POST(req: Request) {
@@ -12,36 +12,36 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    const { subredditId } = SubredditSubscriptionValidator.parse(body)
+    const { threadId } = ThreadSubscriptionValidator.parse(body)
 
     // check if user has already subscribed or not
     const subscriptionExists = await db.subscription.findFirst({
       where: {
-        subredditId,
+        threadId,
         userId: session.user.id,
       },
     })
 
     if (!subscriptionExists) {
       return new Response(
-        "You've not been subscribed to this subreddit, yet.",
+        "You've not been subscribed to this thread, yet.",
         {
           status: 400,
         }
       )
     }
 
-    // create subreddit and associate it with the user
+    // create thread and associate it with the user
     await db.subscription.delete({
       where: {
-        userId_subredditId: {
-          subredditId,
+        userId_threadId: {
+          threadId,
           userId: session.user.id,
         },
       },
     })
 
-    return new Response(subredditId)
+    return new Response(threadId)
   } catch (error) {
     (error)
     if (error instanceof z.ZodError) {
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     }
 
     return new Response(
-      'Could not unsubscribe from subreddit at this time. Please try later',
+      'Could not unsubscribe from thread at this time. Please try later',
       { status: 500 }
     )
   }

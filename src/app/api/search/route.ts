@@ -6,7 +6,7 @@ export async function GET(req: Request) {
 
   if (!q) return new Response('Invalid query', { status: 400 })
 
-  const results = await db.subreddit.findMany({
+  const results = await db.thread.findMany({
     where: {
       name: {
         startsWith: q,

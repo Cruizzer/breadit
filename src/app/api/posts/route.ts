@@ -15,37 +15,37 @@ export async function GET(req: Request) {
         userId: session.user.id,
       },
       include: {
-        subreddit: true,
+        thread: true,
       },
     })
 
-    followedCommunitiesIds = followedCommunities.map((sub) => sub.subreddit.id)
+    followedCommunitiesIds = followedCommunities.map((sub) => sub.thread.id)
   }
 
   try {
-    const { limit, page, subredditName } = z
+    const { limit, page, threadName } = z
       .object({
         limit: z.string(),
         page: z.string(),
-        subredditName: z.string().nullish().optional(),
+        threadName: z.string().nullish().optional(),
       })
       .parse({
-        subredditName: url.searchParams.get('subredditName'),
+        threadName: url.searchParams.get('threadName'),
         limit: url.searchParams.get('limit'),
         page: url.searchParams.get('page'),
       })
 
     let whereClause = {}
 
-    if (subredditName) {
+    if (threadName) {
       whereClause = {
-        subreddit: {
-          name: subredditName,
+        thread: {
+          name: threadName,
         },
       }
     } else if (session) {
       whereClause = {
-        subreddit: {
+        thread: {
           id: {
             in: followedCommunitiesIds,
           },
@@ -60,7 +60,7 @@ export async function GET(req: Request) {
         createdAt: 'desc',
       },
       include: {
-        subreddit: true,
+        thread: true,
         votes: true,
         author: true,
         comments: true,
