@@ -84,13 +84,13 @@ const SearchBar: FC<SearchBarProps> = ({ }) => {
               {queryResults?.map((thread) => (
                 <CommandItem
                   onSelect={(e) => {
-                    router.push(`/r/${e}`)
+                    router.push(`/forum/${e}`)
                     router.refresh()
                   }}
                   key={thread.id}
                   value={thread.name}>
                   <Users className='mr-2 h-4 w-4' />
-                  <a href={`/r/${thread.name}`}>r/{thread.name}</a>
+                  <a href={`/forum/${thread.name}`}>forum/{thread.name}</a>
                 </CommandItem>
               ))}
             </CommandGroup>

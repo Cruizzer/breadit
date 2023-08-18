@@ -59,7 +59,7 @@ export const Editor: React.FC<EditorProps> = ({ threadId }) => {
       })
     },
     onSuccess: () => {
-      // turn pathname /r/mycommunity/submit into /r/mycommunity
+      // turn pathname /forum/mycommunity/submit into /forum/mycommunity
       const newPathname = pathname.split('/').slice(0, -1).join('/')
       router.push(newPathname)
 

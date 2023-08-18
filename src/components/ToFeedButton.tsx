@@ -7,8 +7,8 @@ import { buttonVariants } from './ui/Button'
 const ToFeedButton = () => {
   const pathname = usePathname()
 
-  // if path is /r/mycom, turn into /
-  // if path is /r/mycom/post/cligad6jf0003uhest4qqkeco, turn into /r/mycom
+  // if path is /forum/mycom, turn into /
+  // if path is /forum/mycom/post/cligad6jf0003uhest4qqkeco, turn into /forum/mycom
 
   const threadPath = getThreadPath(pathname)
 

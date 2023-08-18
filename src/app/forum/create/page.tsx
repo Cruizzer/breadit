@@ -54,7 +54,7 @@ const Page = () => {
       })
     },
     onSuccess: (data) => {
-      router.push(`/r/${data}`)
+      router.push(`/forum/${data}`)
     },
   })
 
@@ -74,7 +74,7 @@ const Page = () => {
           </p>
           <div className='relative'>
             <p className='absolute text-sm left-0 w-8 inset-y-0 grid place-items-center text-zinc-400'>
-              r/
+              forum/
             </p>
             <Input
               value={input}

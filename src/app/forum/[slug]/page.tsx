@@ -39,7 +39,7 @@ const page = async ({ params }: PageProps) => {
   return (
     <>
       <h1 className='font-bold text-3xl md:text-4xl h-14'>
-        r/{thread.name}
+        forum/{thread.name}
       </h1>
       <MiniCreatePost session={session} />
       <PostFeed initialPosts={thread.posts} threadName={thread.name} />
