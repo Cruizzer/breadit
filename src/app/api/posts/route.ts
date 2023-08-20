@@ -1,26 +1,12 @@
-import { getAuthSession } from '@/lib/auth'
+// import { getAuthSession } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { z } from 'zod'
 
 export async function GET(req: Request) {
   const url = new URL(req.url)
 
-  const session = await getAuthSession()
+  // const session = await getAuthSession()
 
-  let followedCommunitiesIds: string[] = []
-
-  if (session) {
-    const followedCommunities = await db.subscription.findMany({
-      where: {
-        userId: session.user.id,
-      },
-      include: {
-        thread: true,
-      },
-    })
-
-    followedCommunitiesIds = followedCommunities.map((sub) => sub.thread.id)
-  }
 
   try {
     const { limit, page, threadName } = z
@@ -41,14 +27,6 @@ export async function GET(req: Request) {
       whereClause = {
         thread: {
           name: threadName,
-        },
-      }
-    } else if (session) {
-      whereClause = {
-        thread: {
-          id: {
-            in: followedCommunitiesIds,
-          },
         },
       }
     }

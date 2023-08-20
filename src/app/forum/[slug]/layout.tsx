@@ -1,4 +1,4 @@
-import SubscribeLeaveToggle from '@/components/SubscribeLeaveToggle'
+// import SubscribeLeaveToggle from '@/components/SubscribeLeaveToggle'
 import ToFeedButton from '@/components/ToFeedButton'
 import { buttonVariants } from '@/components/ui/Button'
 import { getAuthSession } from '@/lib/auth'
@@ -35,30 +35,7 @@ const Layout = async ({
     },
   })
 
-  const subscription = !session?.user
-    ? undefined
-    : await db.subscription.findFirst({
-      where: {
-        thread: {
-          name: slug,
-        },
-        user: {
-          id: session.user.id,
-        },
-      },
-    })
-
-  const isSubscribed = !!subscription
-
   if (!thread) return notFound()
-
-  const memberCount = await db.subscription.count({
-    where: {
-      thread: {
-        name: slug,
-      },
-    },
-  })
 
   return (
     <div className='sm:container max-w-7xl mx-auto h-full pt-12'>
@@ -82,25 +59,19 @@ const Layout = async ({
                   </time>
                 </dd>
               </div>
-              <div className='flex justify-between gap-x-4 py-3'>
+              {/* <div className='flex justify-between gap-x-4 py-3'>
                 <dt className='text-gray-500'>Members</dt>
                 <dd className='flex items-start gap-x-2'>
                   <div className='text-gray-900'>{memberCount}</div>
                 </dd>
-              </div>
+              </div> */}
               {thread.creatorId === session?.user?.id ? (
                 <div className='flex justify-between gap-x-4 py-3'>
                   <dt className='text-gray-500'>You created this community</dt>
                 </div>
               ) : null}
 
-              {thread.creatorId !== session?.user?.id ? (
-                <SubscribeLeaveToggle
-                  isSubscribed={isSubscribed}
-                  threadId={thread.id}
-                  threadName={thread.name}
-                />
-              ) : null}
+
               <Link
                 className={buttonVariants({
                   variant: 'outline',

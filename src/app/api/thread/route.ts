@@ -33,13 +33,6 @@ export async function POST(req: Request) {
       },
     })
 
-    // creator also has to be subscribed
-    await db.subscription.create({
-      data: {
-        userId: session.user.id,
-        threadId: thread.id,
-      },
-    })
 
     return new Response(thread.name)
   } catch (error) {
@@ -48,5 +41,20 @@ export async function POST(req: Request) {
     }
 
     return new Response('Could not create thread', { status: 500 })
+  }
+}
+
+export async function GET(req: Request) {
+  try {
+    const threads = await db.thread.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return new Response(JSON.stringify(threads))
+  }
+  catch (error) {
+    return new Response('Could not fetch threads', { status: 500 })
   }
 }

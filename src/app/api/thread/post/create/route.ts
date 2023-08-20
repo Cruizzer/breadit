@@ -15,17 +15,8 @@ export async function POST(req: Request) {
       return new Response('Unauthorized', { status: 401 })
     }
 
-    // verify user is subscribed to passed thread id
-    const subscription = await db.subscription.findFirst({
-      where: {
-        threadId,
-        userId: session.user.id,
-      },
-    })
 
-    if (!subscription) {
-      return new Response('Subscribe to post', { status: 403 })
-    }
+
 
     await db.post.create({
       data: {
